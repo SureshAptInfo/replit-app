@@ -2,6 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'screens/profile_screen.dart';
+import 'screens/data_screen.dart';
+import 'widgets/custom_card.dart';
+import 'widgets/loading_button.dart';
+import 'widgets/status_badge.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,7 +21,51 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: MainNavigationPage(),
+    );
+  }
+}
+
+class MainNavigationPage extends StatefulWidget {
+  @override
+  _MainNavigationPageState createState() => _MainNavigationPageState();
+}
+
+class _MainNavigationPageState extends State<MainNavigationPage> {
+  int _selectedIndex = 0;
+  
+  final List<Widget> _pages = [
+    HomePage(),
+    DataScreen(),
+    ProfileScreen(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.data_usage),
+            label: 'Data',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
     );
   }
 }
@@ -70,75 +119,101 @@ class _HomePageState extends State<HomePage> {
         title: Text('Flutter App'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Text(
-                      'Welcome to Flutter App',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      textAlign: TextAlign.center,
+            CustomCard(
+              title: 'Welcome to Flutter App',
+              subtitle: 'This Flutter app connects to your Express backend',
+              icon: Icons.flutter_dash,
+            ),
+            SizedBox(height: 16),
+            LoadingButton(
+              text: 'Fetch Data from API',
+              onPressed: fetchData,
+              isLoading: isLoading,
+              icon: Icons.cloud_download,
+            ),
+            SizedBox(height: 20),
+            CustomCard(
+              title: 'API Response',
+              icon: Icons.api,
+              child: Column(
+                children: [
+                  SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.grey[300]!),
                     ),
-                    SizedBox(height: 16),
-                    Text(
-                      'This Flutter app connects to your Express backend',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
+                    child: Text(
+                      apiResponse,
+                      style: TextStyle(
+                        fontFamily: 'monospace',
+                        fontSize: 13,
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 12),
+                  StatusBadge(
+                    text: apiResponse.contains('Error') ? 'Failed' : 'Success',
+                    status: apiResponse.contains('Error') 
+                        ? StatusType.error 
+                        : StatusType.success,
+                  ),
+                ],
               ),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: isLoading ? null : fetchData,
-              child: isLoading
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+            CustomCard(
+              title: 'Quick Actions',
+              icon: Icons.bolt,
+              child: Column(
+                children: [
+                  SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Feature coming soon!')),
+                            );
+                          },
+                          icon: Icon(Icons.refresh),
+                          label: Text('Refresh'),
                         ),
-                        SizedBox(width: 8),
-                        Text('Loading...'),
-                      ],
-                    )
-                  : Text('Fetch Data from API'),
-            ),
-            SizedBox(height: 20),
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'API Response:',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    SizedBox(height: 8),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Text(
-                        apiResponse,
-                        style: TextStyle(fontFamily: 'monospace'),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('About'),
+                                content: Text('Flutter App v1.0.0\nBuilt with Material Design 3'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          icon: Icon(Icons.info),
+                          label: Text('About'),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
