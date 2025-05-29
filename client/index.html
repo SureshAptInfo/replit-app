@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="theme-color" content="#3f51b5" />
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.jsdelivr.net/gh/feathericons/feather@4.29.0/icons/users.svg" />
+    <link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/gh/feathericons/feather@4.29.0/icons/users.svg" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="LeadTrackPro | Agency CRM Platform" />
+    <meta property="og:description" content="A powerful multi-tenant CRM platform for agencies to manage leads, automate follow-ups, and boost conversions." />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="LeadTrackPro | Agency CRM Platform" />
+    <meta property="twitter:description" content="A powerful multi-tenant CRM platform for agencies to manage leads, automate follow-ups, and boost conversions." />
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <title>LeadTrackPro | Agency CRM Platform</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
+    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+    
+    <!-- Script to fix the sidebar leads count display -->
+    <script>
+      // Function to continuously check and update the sidebar text
+      function startSidebarLeadCountUpdater() {
+        // Function to find and update the sidebar lead count
+        function updateSidebarLeadsCount() {
+          // This targets the specific sidebar navigation links by looking for href attributes
+          const allLinks = document.querySelectorAll('a');
+          const leadLink = Array.from(allLinks).find(link => 
+            link.getAttribute('href') === '/leads' && 
+            link.textContent && 
+            link.textContent.includes('Leads')
+          );
+          
+          if (leadLink) {
+            // Get the current leads count via API
+            fetch('/api/leads/counts?subAccountId=1&timestamp=' + Date.now())
+              .then(response => response.json())
+              .then(data => {
+                const count = data.total || 0;
+                // Update the text content directly with regex replacement
+                const text = leadLink.innerHTML;
+                if (text.includes('Leads (')) {
+                  leadLink.innerHTML = text.replace(/Leads \(\d+\)/, `Leads (${count})`);
+                }
+              })
+              .catch(console.error);
+          }
+        }
+        
+        // Keep checking every second until we find and update the sidebar
+        const checkInterval = setInterval(function() {
+          updateSidebarLeadsCount();
+        }, 1000);
+        
+        // Safety timeout after 1 minute
+        setTimeout(function() {
+          clearInterval(checkInterval);
+        }, 60000);
+      }
+      
+      // Start watching for sidebar updates when page loads
+      window.addEventListener('load', startSidebarLeadCountUpdater);
+      
+      // Also start when DOM is ready
+      if (document.readyState === 'interactive' || document.readyState === 'complete') {
+        startSidebarLeadCountUpdater();
+      } else {
+        document.addEventListener('DOMContentLoaded', startSidebarLeadCountUpdater);
+      }
+    </script>
+  </body>
+</html>

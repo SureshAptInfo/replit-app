@@ -1,0 +1,315 @@
+Product Requirements Document (PRD) for LeadTrackPro
+
+1. Product Overview
+
+Product Name: LeadTrackProTarget Users: Marketing & sales agencies, client-side sales teamsPlatform: Web + Mobile (Android & iOS)Type: Mobile-first, multi-tenant CRM platform
+
+Summary:LeadTrackPro is a white-labeled CRM platform designed specifically for agencies to manage multiple client accounts, automate lead handling, and streamline communication across channels like WhatsApp, SMS, email, and phone calls. The platform helps users capture, assign, track, and convert leads in a centralized yet client-segregated system.
+
+2. Goals & Success Metrics
+
+Business Goals:
+
+Enable agencies to onboard and manage 50+ client accounts within the first 6 months
+
+Reduce average lead response time by 30% via automation and alerts
+
+Increase lead conversion rates by 20% through integrated communications
+
+Success Metrics:
+
+DAUs (Daily Active Users) across mobile and web
+
+Average time to first contact for new leads
+
+Number of active sub-accounts per agency
+
+User engagement with automated workflows
+
+3. Features & Requirements
+
+3.0 Screens & Menus
+
+Screen 1: Dashboard Overview
+
+Interactive stats tiles: All, Read, Unread, Contacted, RNR (Ring No Response), Follow-Up, Junk, Interested, Not Interested, Converted, Lost
+
+Clickable tiles to navigate to filtered lead views
+
+Date filters: Specific date, date range, this month, last month
+
+Leads received graph with drilldown by lead quality and tags
+
+Sorting options: Name, Phone Number, Date Created
+
+Visual target tracker: Achieved vs. Overall Target
+
+Screen 2: Lead List View
+
+Tabbed view: All, Read, Unread, Contacted, RNR, Follow-Up, Junk, Interested, Not Interested, Converted, Lost
+
+Infinite scroll or paginated list
+
+Filter by source, tag, date range, status
+
+Screen 3: Lead Detail View
+
+Contact icons: Phone, Email, WhatsApp, SMS with action triggers (with one tap use inbuilt mobile apps for now)
+
+Horizontal progress bar indicating lead status/stage
+
+Remarks/comments section
+
+Vertical timeline of all lead interactions(spaced & aesthetic) (calls, messages, updates)
+
+Next followup calendar with date & time reminder (callback, schedule and neccessary activities)
+
+Log section with remarks and timestamps ()
+
+Dropdown or quick-select templates for one-tap messages
+
+Place to add client collaterals (pdf, image & videos)
+
+Menu: Integrations Settings
+
+Toggle integrations on/off (e.g., Facebook Lead Ads, JustDial, IndiaMART, WhatsApp, Google Forms, Webchat)
+
+Input fields for API keys and webhook URLs (for all necessary user stage change)
+
+Integration status and logs
+
+Menu: User Access & Team Management
+
+Add/edit/delete users
+
+Assign roles: Admin, Sales, Marketing
+
+Map users to specific sub-accounts or lead types
+
+Main Functional Requirements Covered
+
+Instant Lead Alerts from Facebook, JustDial, IndiaMART, Google Forms, CSV
+
+Follow-up Reminders and Smart Scheduling
+
+One-Tap Message Templates
+
+Automatic Activity Logs
+
+Smart Lead Assignment Rules
+
+Centralized Sales Resources
+
+Subteams and Role Management
+
+Multi-Client Analytics and Drilldowns
+
+Sales Forecasting and Funnel Visualization
+
+Gamified Dashboards, Leaderboards, and Goal Tracking
+
+Free Trial Handling and Account Expiry Notifications
+
+3.1 Sub-Account & Role Management
+
+Create, edit, and delete sub-accounts
+
+Assign users to sub-accounts with role-based access
+
+Agency-level view to manage all accounts
+
+Branding: custom logo, domain, sender ID per sub-account
+
+3.2 Lead Management
+
+Auto-capture from platforms (FB, Google, LinkedIn, forms, Zapier)
+
+Manual creation and bulk CSV import
+
+Status stages: New, Contacted, Qualified, Won, Lost
+
+Lead tagging, filtering, search
+
+Business card scanner (OCR-based)
+
+3.3 Lead Distribution
+
+Assignment modes: round-robin, geo-based, priority-based
+
+Manual reassignment and inactivity rules
+
+Assignment notifications and tracking logs
+
+3.4 Communication
+
+Unified messaging inbox: WhatsApp, Email, SMS, Phone
+
+Templates with dynamic fields
+
+Scheduled follow-ups and automation triggers
+
+Multi-language message support
+
+3.5 Content Sharing
+
+Asset library per sub-account
+
+Link sharing with view and click tracking
+
+Trigger follow-up based on engagement behavior
+
+3.6 Tasks & Automation
+
+Workflow builder (if-this-then-that style)
+
+Task reminders via mobile/email
+
+Calendar sync (Google/Outlook)
+
+3.7 Reporting & Analytics
+
+Agency-wide dashboards
+
+Sub-account analytics and drill-downs
+
+Downloadable and schedulable reports (PDF/CSV)
+
+3.8 Integrations
+
+FB/Google/LinkedIn lead forms
+
+WordPress/webhooks
+
+Email APIs (SendGrid/Mailgun)
+
+Zapier and public REST API
+
+4. Technical Requirements
+
+Architecture:
+
+Multi-tenant SaaS with isolated sub-account data
+
+RESTful APIs with token-based auth
+
+Cloud hosting (AWS/GCP)
+
+Security:
+
+Role-based access control
+
+HTTPS encryption
+
+GDPR/CCPA compliance
+
+Activity logging per user
+
+Scalability:
+
+Support 10,000+ concurrent users
+
+Auto-scaling infrastructure
+
+Sharded databases for sub-account data isolation
+
+Mobile Support:
+
+Native Android and iOS apps
+
+Offline mode with delayed sync
+
+5. User Roles & Permissions
+
+Role
+
+Permissions
+
+Agency Owner
+
+Full control over all sub-accounts and users
+
+Client Admin
+
+Manages users, content, and leads within account
+
+Client User
+
+Interacts with leads, limited access
+
+System Admin
+
+Configuration, monitoring, security
+
+6. Milestones & Timeline (MVP)
+
+Unified Phase (Month 1–4): Complete MVP with core CRM functionality including sub-account management, user roles, lead management, communication integrations, mobile app, workflow automation, and analytics.Proof of Concept (POC):
+
+Web portal with dashboard, lead table, filters, and charts
+
+Sub-account management with CRUD functionality
+
+Role-based login system using JWT
+
+Unified inbox with WhatsApp, SMS, Email integrations (via Twilio, SendGrid, WhatsApp Business API)
+
+React Native mobile app with offline support and push notifications
+
+Workflow builder for automations (lead assignment, reminders)
+
+Analytics dashboard using Chart.js or Recharts
+
+Downloadable reports (PDF/CSV)
+
+Replit AI Command for Full MVP Build:
+"""
+Build a full-featured CRM using MERN stack + React Native:
+
+Models: User, SubAccount, Lead (statuses: new, read, contacted, followup, converted, lost, etc.)
+
+Pages:
+
+Dashboard: stats, date filters, charts (lead source, quality, tags)
+
+Leads: sortable list view with filters and tabs (read/unread/etc.)
+
+Lead Detail: icons for call, SMS, WhatsApp, email + activity log, comments, message templates
+
+Settings: API integrations page with toggle and input for API keys
+
+User Management: role-based access and user CRUD
+
+Integrate WhatsApp, Twilio, SendGrid
+
+Mobile app with offline sync and push alerts
+
+Workflow automation and reporting engine
+"""
+
+7. Future Enhancements
+
+AI-powered lead scoring and message suggestions
+
+Client-branded apps via SDK
+
+Voice AI for call sentiment analysis
+
+A/B testing for templates
+
+Gamified sales dashboards
+
+8. Assumptions & Risks
+
+WhatsApp API access is subject to Facebook approval
+
+Agencies are responsible for DNS/domain setup
+
+SMS/email delivery depends on third-party API SLAs
+
+9. Appendices
+
+Glossary of CRM terms
+
+Data models (ER diagrams)
+
+Sample user stories
+
