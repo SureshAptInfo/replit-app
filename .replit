@@ -6,3 +6,14 @@ channel = "stable-24_05"
 
 [deployment]
 run = ["sh", "-c", "npm run dev"]
+
+[workflows]
+
+[[workflows.workflow]]
+name = "Flutter Dev"
+author = 25340387
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd flutter_app && flutter pub get && flutter run -d web-server --web-port=3000 --web-hostname=0.0.0.0"
